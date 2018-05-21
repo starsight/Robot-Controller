@@ -31,7 +31,7 @@
 *.log
 
 # build directory
-build
+＃build
 .idea
 
 #output terminal log
@@ -42,3 +42,6 @@ build
 #.vscode/*.bat
 
 #iec_compiler
+rc-runtime/rc-runtime
+iec-runtime/iec-runtime
+RobotController
