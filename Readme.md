@@ -11,3 +11,9 @@ RC进程(rc-runtime目录)
 cd ./rc-runtime/build/ && cmake .. && make
 
 EtherCAT总线进程(devices目录)   cd ./devices && make
+
+---
+
+更新日志
+
+[update-log](update-log.md)
