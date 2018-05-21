@@ -47,10 +47,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/workspace/ychj/RobotController/rc-runtime
+CMAKE_SOURCE_DIR = /home/ychj/wenjie/Robot-Controller/rc-runtime
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/workspace/ychj/RobotController/rc-runtime/build
+CMAKE_BINARY_DIR = /home/ychj/wenjie/Robot-Controller/rc-runtime/build
 
 #=============================================================================
 # Directory level rules for directory src
@@ -74,7 +74,7 @@ src/preinstall:
 src/CMakeFiles/rc-runtime.dir/all:
 	$(MAKE) -f src/CMakeFiles/rc-runtime.dir/build.make src/CMakeFiles/rc-runtime.dir/depend
 	$(MAKE) -f src/CMakeFiles/rc-runtime.dir/build.make src/CMakeFiles/rc-runtime.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
 	@echo "Built target rc-runtime"
 .PHONY : src/CMakeFiles/rc-runtime.dir/all
 
@@ -84,9 +84,9 @@ all: src/CMakeFiles/rc-runtime.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/rc-runtime.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles 32
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles 32
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/rc-runtime.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/rc-runtime.dir/rule
 
 # Convenience name for target.

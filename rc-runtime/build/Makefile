@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/workspace/ychj/RobotController/rc-runtime
+CMAKE_SOURCE_DIR = /home/ychj/wenjie/Robot-Controller/rc-runtime
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/workspace/ychj/RobotController/rc-runtime/build
+CMAKE_BINARY_DIR = /home/ychj/wenjie/Robot-Controller/rc-runtime/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/ychj/RobotController/rc-runtime/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ychj/wenjie/Robot-Controller/rc-runtime/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

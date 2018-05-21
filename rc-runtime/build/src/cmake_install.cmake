@@ -1,4 +1,4 @@
-# Install script for directory: /root/workspace/ychj/RobotController/rc-runtime/src
+# Install script for directory: /home/ychj/wenjie/Robot-Controller/rc-runtime/src
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
