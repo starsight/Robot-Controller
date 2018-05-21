@@ -10,7 +10,7 @@ SET(CMAKE_C_COMPILER g++)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11  -pthread")
 # SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++0x -g -I/home/mynfs/usr/xenomai/include -L/home/mynfs/usr/xenomai/lib")
 
-link_directories(/usr/xenomai/lib /root/workspace/ychj/RobotController/rc-runtime/lib)
+link_directories(/usr/xenomai/lib /home/ychj/wenjie/Robot-Controller/rc-runtime/lib)
 SET(LIBRARIES libnative.so libnative.a libxenomai.so libxenomai.a libpthread_rt.so libpthread_rt.a libServerT.so libantlr4-runtime.so)
 
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR} MAIN_SRC)

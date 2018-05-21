@@ -100,7 +100,7 @@ void sig_handler(int signo){
 // 子任务启动过程（后续可能加入当硬件设备任务启动完成-->启动PLC任务，等待PLC任务启动完成-->启动RC任务）
 int sys_task_start(){
 	insert_device_interface(dev_pid);
-	rt_task_bind(&dev_task_desc,DEV_TASK_NAME,TM_INFINITE);
+	//rt_task_bind(&dev_task_desc,DEV_TASK_NAME,TM_INFINITE);
 	insert_plc_task(plc_pid);
 	insert_rc_task(rc_pid);
 	return 0;

@@ -305,7 +305,7 @@ int main(int argc, char **argv) {
 	printf("Move Mode : ");
 	rc_core.stepflag == 1 ? printf("Step mode\n") : printf("Continuous mode\n");
 	// 模拟示教盒操作
-	/*
+	
 	printf("Please enter Teach Box Command\n");
 	printf("p: import project\n");
 	printf("f: import program file\n");
@@ -359,7 +359,7 @@ int main(int argc, char **argv) {
 			default:
 				break;
 		}
-	}*/
+	}
 
 	pause();
 

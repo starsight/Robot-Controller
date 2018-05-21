@@ -12,7 +12,7 @@
 #define LEVEL_DBG	5
 #define LEVEL_ALL	6
 
-#define LOGGER_LEVEL	LEVEL_TRA
+#define LOGGER_LEVEL	LEVEL_DBG
 
 #define EOL 	{fprintf(stderr,"\n");}
 #define CP(x)	{fprintf(stderr,"check point %d\n",x);}
