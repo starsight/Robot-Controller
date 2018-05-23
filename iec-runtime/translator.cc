@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <functional>
+#include <stdint.h>
 
 
 
@@ -184,6 +185,12 @@ objmacro_format objmacro = {
 	{"SFUN_FIND", "38"},
 	/* RC/PLC交互函数 */
 	{"SFUN_INTERP_UPDATE", "39"},
+	{"SFUN_SERVO_INPUT_UPDATE", "40"},
+	{"SFUN_SERVO_OUTPUT_UPDATE","41"},
+	{"SFUN_RCMODE_READ", "42"},
+	{"SFUN_RCPLC_SERVOFLAG_SET", "43"},
+	{"SFUN_SERVO_POWERON", "44"},
+	{"SFUN_SERVO_POWEROFF", "45"}
 };
 
 
@@ -244,59 +251,59 @@ auto create_scall = []( std::vector<std::string> result) -> int {
 
 code_gen_table opcode = {
 	// data move
-	{"OP_GLOAD", {1, create_ABx}},
-	{"OP_GSTORE", {2, create_ABx}},
-	{"OP_KLOAD", {3, create_ABx}},
-    {"OP_LDLOAD", {4,  create_ABC}},
-    {"OP_LDSTORE", {5, create_ABC}},
-    {"OP_LALOAD", {6,  create_ABC}},
-    {"OP_LASTORE", {7, create_ABC}},
-    {"OP_RDLOAD", {8, create_ABC}},
-    {"OP_RDSTORE", {9, create_ABC}},
-    {"OP_RALOAD", {10, create_ABC}},
-    {"OP_RASTORE", {11, create_ABC}},
-    {"OP_MOV", {12, create_ABC}},
+	{"gload", {1, create_ABx}},
+	{"gstore", {2, create_ABx}},
+	{"kload", {3, create_ABx}},
+    {"ldload", {4,  create_ABC}},
+    {"ldstore", {5, create_ABC}},
+    {"laload", {6,  create_ABC}},
+    {"lastore", {7, create_ABC}},
+    {"rdload", {8, create_ABC}},
+    {"rdstore", {9, create_ABC}},
+    {"raload", {10, create_ABC}},
+    {"rastore", {11, create_ABC}},
+    {"mov", {12, create_ABC}},
     //arithmetic
-    {"OP_ADD", {13, create_ABC}},
-    {"OP_SUB", {14, create_ABC}},
-    {"OP_MUL", {15, create_ABC}},
-    {"OP_DIV", {16, create_ABC}},
+    {"add", {13, create_ABC}},
+    {"sub", {14, create_ABC}},
+    {"mul", {15, create_ABC}},
+    {"div", {16, create_ABC}},
     // bit operation
-    {"OP_SHL", {17, create_ABC}},
-    {"OP_SHR", {18, create_ABC}},
-    {"OP_AND", {19, create_ABC}},
-    {"OP_OR",  {20, create_ABC}},
-    {"OP_XOR", {21, create_ABC}},
-    {"OP_NOT", {22, create_ABC}},
+    {"shl", {17, create_ABC}},
+    {"shr", {18, create_ABC}},
+    {"and", {19, create_ABC}},
+    {"or",  {20, create_ABC}},
+    {"xor", {21, create_ABC}},
+    {"not", {22, create_ABC}},
     // logic operation
-    {"OP_LAND", {23, create_ABC}},
-    {"OP_LOR",  {24, create_ABC}},
-    {"OP_LXOR", {25, create_ABC}},
-    {"OP_LNOT", {26, create_ABC}},
+    {"land", {23, create_ABC}},
+    {"lor",  {24, create_ABC}},
+    {"lxor", {25, create_ABC}},
+    {"lnot", {26, create_ABC}},
     // comparison
-    {"OP_LT", {27, create_ABC}},
-    {"OP_LE", {28, create_ABC}},
-    {"OP_GT", {29, create_ABC}},
-    {"OP_GE", {30, create_ABC}},
-    {"OP_EQ", {31, create_ABC}},
-    {"OP_NE", {32, create_ABC}},
+    {"lt", {27, create_ABC}},
+    {"le", {28, create_ABC}},
+    {"gt", {29, create_ABC}},
+    {"ge", {30, create_ABC}},
+    {"eq", {31, create_ABC}},
+    {"ne", {32, create_ABC}},
     // flow control
-    {"OP_CONDJ", {33, create_ABx}},
-    {"OP_JMP", {34, create_sAx}},
-    {"OP_HALT", {35, create_ABC}},
+    {"condj", {33, create_ABx}},
+    {"jmp", {34, create_sAx}},
+    {"halt", {35, create_ABC}},
     // call
-    {"OP_SCALL", {36, create_scall}},
-    {"OP_UCALL", {37, create_ABx}},
-    {"OP_RET", {38, create_ABx}},
+    {"scall", {36, create_scall}},
+    {"ucall", {37, create_ABx}},
+    {"ret", {38, create_ABx}},
     // reference data manipulation
-    {"OP_GETFIELD", {39, create_ABC}},
-    {"OP_SETFIELD", {40, create_ABC}},
+    {"getfield", {39, create_ABC}},
+    {"setfield", {40, create_ABC}},
     // functional instruction
-    {"OP_TP", {41, create_ABx}},
-    {"OP_TON", {42, create_ABx}},
-    {"OP_TOF", {43, create_ABx}},
-    {"OP_PGLOAD", {44, create_ABx}},
-	{"OP_PGSTORE", {45, create_ABx}},
+    {"tp", {41, create_ABx}},
+    {"ton", {42, create_ABx}},
+    {"tof", {43, create_ABx}},
+    {"pgload", {44, create_ABx}},
+	{"pgstore", {45, create_ABx}},
     // helper
     {"OP_LDIX", {4, create_DX}},
     {"OP_LDIB", {4, create_DB}},
@@ -353,11 +360,14 @@ void dump_inst(std::ofstream &outfile, std::vector<std::string> &result) {
 void dump_value(std::ofstream &outfile, std::vector<std::string> &result) {
 	if(result[1] == "TUINT") {
 		outfile << (char)2;
-		unsigned long tmp = std::stoul(result[2]);
+		// unsigned long tmp = std::stoul(result[2]);
+		uint64_t tmp = std::stoul(result[2]);
+		std::cout << "unsigned int " << tmp << std::endl;
 		outfile.write((char*)&tmp, 8);
 	} else if(result[1] == "TINT") {
 		outfile << (char)1;
-		long tmp = std::stol(result[2]);
+		// long tmp = std::stol(result[2]);
+		int64_t tmp = std::stol(result[2]);
 		outfile.write((char*)&tmp, 8);
 	} else if(result[1] == "TDOUBLE") {
 		outfile << (char)3;

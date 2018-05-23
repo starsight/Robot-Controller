@@ -38,7 +38,7 @@
 *.dump
 
 #vs code
-#.vscode/*.json
+.vscode/*.json
 #.vscode/*.bat
 
 #iec_compiler
