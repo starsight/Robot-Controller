@@ -45,8 +45,18 @@ extern TaskList plc_task;
 #define do_raload(reg, rai_ch) {setvuint(reg, rai_ch);}
 #define do_rastore(rao, pos, size, reg) {setach(rao, pos, size, (reg).v.value_u);}
 
-#define do_getfield(reg, index, subindex) { reg = task->vref[index.v.value_p].at(subindex.v.value_p);}
-#define do_setfield(reg, index, subindex) { task->vref[index.v.value_p].at(subindex.v.value_p) = reg;}
+#define do_getfield(reg, index, subindex) { reg = task->vref[index.v.value_u].at(subindex.v.value_u);}
+#define do_setfield(reg, index, subindex) { task->vref[index.v.value_u].at(subindex.v.value_u) = reg;}
+#define print_vref_info(A, B) { \
+    outfile << "task->vref:"<< task->vref.size()<<" ";   \
+    outfile << "A->value_u:"<< A.v.value_u<<" ";   \
+    if((task->vref[A.v.value_u].at(B.v.value_u)).type == 1) \
+        outfile << "vref_field" <<A.v.value_u<<"-"<<B.v.value_u<<":"<<(task->vref[A.v.value_u].at(B.v.value_u)).v.value_i<<std::endl; \
+    else if((task->vref[A.v.value_u].at(B.v.value_u)).type == 2)    \
+        outfile << "vref_field" <<A.v.value_u<<"-"<<B.v.value_u<<":"<<(task->vref[A.v.value_u].at(B.v.value_u)).v.value_u<<std::endl; \
+    else if((task->vref[A.v.value_u].at(B.v.value_u)).type == 3)    \
+        outfile << "vref_field" <<A.v.value_u<<"-"<<B.v.value_u<<":"<<(task->vref[A.v.value_u].at(B.v.value_u)).v.value_d<<std::endl; \
+}
 
 /* calling stack */
 #define STK     (task->stack)
@@ -364,8 +374,8 @@ static void executor(void *plc_task_cookie) {
                 case OP_SCALL:  dump_scall(); do_scall(&R(A), Bx); PC++; break;
                 case OP_UCALL:  dump_ucall(); do_ucall(A, Bx); break;
                 case OP_RET:    dump_ret(); do_ret(A, Bx); break;
-                case OP_GETFIELD: do_getfield(R(A), R(B), R(C)); dump_getfield(); PC++; break;
-                case OP_SETFIELD: do_setfield(R(A), R(B), R(C)); dump_setfield(); PC++; break;
+                case OP_GETFIELD: do_getfield(R(A), R(B), R(C)); dump_getfield(); print_vref_info(R(B), R(C)); PC++; break;
+                case OP_SETFIELD: do_setfield(R(A), R(B), R(C)); dump_setfield(); print_vref_info(R(B), R(C)); PC++; break;
                 case OP_TP: dump_tp(A, Bx); do_tp(A, Bx); PC++; break;
                 case OP_TON: dump_ton(A, Bx); do_ton(A, Bx); PC++; break;
                 case OP_TOF: dump_tof(A, Bx); do_tof(A, Bx); PC++; break;

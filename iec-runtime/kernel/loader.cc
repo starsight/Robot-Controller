@@ -5,7 +5,7 @@
 #include "softimer.h"
 #include "../../include/logger.h"
 #include <iostream>
-
+#include <fstream>
 /*-----------------------------------------------------------------------------
  * Helper Funciton Macros
  *---------------------------------------------------------------------------*/
@@ -216,6 +216,8 @@ static int load_value(FILE *fp, IValue *value, StrPool *sp) {
 static int load_plc_task(FILE *fp, PLCTask *task) {
     assert(fp != NULL);
     assert(task != NULL);
+    std::ofstream outfile;
+    outfile.open("/home/ychj/wenjie/plc_load_info.txt");
 
     verify(load_task_desc(fp, &task->task_desc) < 0, E_LOAD_TASK_DESC, "");
     // 必须在加载常量和全局变量段之前加载，因为常量和全局变量段中可能包含字符串
@@ -237,6 +239,7 @@ static int load_plc_task(FILE *fp, PLCTask *task) {
         }
     }
     // 加载常量
+    // 默认采用TUINT
     for (int i = 0; i < task->task_desc.const_count; i++) {
         if (load_value(fp, &task->vconst[i], &task->strpool) < 0) {
             delete[] task->pou_desc;
@@ -247,6 +250,7 @@ static int load_plc_task(FILE *fp, PLCTask *task) {
         }
     }
     // 加载全局变量
+    // 默认采用TINT
     for (int i = 0; i < task->task_desc.global_count; i++) {
         if (load_value(fp, &task->vglobal[i], &task->strpool) < 0) {
             delete[] task->pou_desc;
@@ -255,12 +259,15 @@ static int load_plc_task(FILE *fp, PLCTask *task) {
             delete[] task->code;
             LOGGER_ERR(E_LOAD_TASK_GLOBAL, "");
         }
+        if(task->vglobal[i].type ==1)
+            outfile << "global var" << i << ":="<< task->vglobal[i].v.value_i << std::endl;
     }
     // 加载复杂数据类型 
     for (int i = 0; i < task->task_desc.refval_count; i++) {
         uint16_t cnt = 0;
         loadv(fp, &cnt);
         dump_struct(cnt);
+        outfile << "rank:=" << i << "struct cnt:="<< cnt << std::endl;    
         std::vector<IValue> vec;
         for(int j = 0; j < cnt; j++) {
             IValue temp ;
@@ -271,8 +278,15 @@ static int load_plc_task(FILE *fp, PLCTask *task) {
                 delete[] task->code;
                 LOGGER_ERR(E_LOAD_TASK_GLOBAL, "");
             };
+            if(temp.type ==1)
+                outfile << "temp.v.value_i:= " << temp.v.value_i << std::endl;
+            else if(temp.type ==2)
+                outfile << "temp.v.value_u:= " << temp.v.value_u << std::endl;
+            else if(temp.type ==3)
+                outfile << "temp.v.value_d:= " << temp.v.value_d << std::endl;
             vec.push_back(temp);
         }
+        outfile << "----struct end----" << std::endl;    
         task->vref.push_back(vec);
     }
     // 加载代码段
@@ -281,6 +295,7 @@ static int load_plc_task(FILE *fp, PLCTask *task) {
         verify(GET_OPCODE(task->code[i]) < MIN_OPCODE || MAX_OPCODE < GET_OPCODE(task->code[i]), E_LOAD_OPCODE, "");
         LOGGER_DBG(DFLAG_SHORT, "loaded instruction[%d] = %0#10x, OpCode = %d", i, task->code[i], GET_OPCODE(task->code[i]));
     }
+    outfile << "end!" <<std::endl;
     printf("OVER\n");
     // 必须在加载完POU描述符后初始化
     verify(cs_init(&task->stack, task->task_desc.cs_size) < 0, E_CS_INIT, ""); /* MUST initialize after loading POU descriptor */

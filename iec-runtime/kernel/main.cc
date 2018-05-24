@@ -50,11 +50,13 @@ void sig_handler(int signo){
 		plc_task_delete(&plc_task);
 		exit(0);
 	}
+	//outfile.close();
 }
 
 int main(int argc, char* argv[]){
 	mlockall(MCL_CURRENT|MCL_FUTURE);
-    outfile.open("/home/seu/workspace/logfile/plcloginfo.txt");
+    //outfile.open("/home/seu/workspace/logfile/plcloginfo.txt");	
+    outfile.open("/home/ychj/wenjie/plcloginfo.txt");
     outfile << "logfile" << std::endl;
 	if(signal(SIGINT, &sig_handler) == SIG_ERR){
 		LOGGER_ERR(E_SIG_PLCKILL,"");
