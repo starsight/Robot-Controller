@@ -96,10 +96,13 @@ extern TaskList plc_task;
     /* sframe, pou_id, ret_addr, regs_needed */                                 \
     sf_init(called_sf, called_id, PC+1, UPOU_REGC(called_id));                  \
     if(UPOU_TYPE(called_id) == 2) {                                             \
-        fb_load(called_sf, task->vref[UPOU_INSTANCE(called_id)]);               \
+        /* called_sf, input_base, caller_sf, input_base, inputc */                  \
+        sf_regcpy(called_sf, 0, CURR_SF, caller_input_base, UPOU_REGC(called_id));  \
+    }else{                                                                          \
+        sf_regcpy(called_sf, 0, CURR_SF, caller_input_base, UPOU_REGIC(called_id)); \
     }                                                                           \
     /* called_sf, input_base, caller_sf, input_base, inputc */                  \
-    sf_regcpy(called_sf, 0, CURR_SF, caller_input_base, UPOU_REGIC(called_id)); \
+    /*sf_regcpy(called_sf, 0, CURR_SF, caller_input_base, UPOU_REGIC(called_id));*/ \
     cs_push(STK, called_sf);                                                    \
     PC = UPOU_ENTRY(called_id);                                                 \
 }
@@ -107,7 +110,8 @@ extern TaskList plc_task;
 /* ret返回过程： 解码ret->传出参数->PC指针跳转->栈帧出栈 */
 #define do_ret(caller_input_base, called_id) {                                  \
     if(UPOU_TYPE(CURR_SF.pou) == 2) {                                           \
-        fb_store(task->vref[UPOU_INSTANCE(CURR_SF.pou)], CURR_SF);              \
+        sf_regcpy(PREV_SF, CURR_SF.retreg+UPOU_INPUTC(CURR_SF.pou),             \
+                CURR_SF, 0+UPOU_INPUTC(CURR_SF.pou), UPOU_REGC(CURR_SF.pou));   \
     } else {                                                                    \
         /* caller_sf, output_base, called_sf, output_base, outpouc */           \
         sf_regcpy(PREV_SF, CURR_SF.retreg,                                      \
