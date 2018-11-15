@@ -79,6 +79,7 @@ extern TaskList plc_task;
 #define UPOU_INOUTC(i)  (UPOU_DESC(i).inout_count)
 #define UPOU_OUTPUTC(i) (UPOU_DESC(i).output_count)
 #define UPOU_LOCALC(i)  (UPOU_DESC(i).local_count)
+/*pou_type 函数(1)、功能块(2)、程序(3)*/
 #define UPOU_TYPE(i)    (UPOU_DESC(i).pou_type)
 #define UPOU_INSTANCE(i) (UPOU_DESC(i).pou_instance)
 #define UPOU_REGIC(i)   (UPOU_INPUTC(i) + UPOU_INOUTC(i))
@@ -111,7 +112,7 @@ extern TaskList plc_task;
 #define do_ret(caller_input_base, called_id) {                                  \
     if(UPOU_TYPE(CURR_SF.pou) == 2) {                                           \
         sf_regcpy(PREV_SF, CURR_SF.retreg+UPOU_INPUTC(CURR_SF.pou),             \
-                CURR_SF, 0+UPOU_INPUTC(CURR_SF.pou), UPOU_REGC(CURR_SF.pou));   \
+                CURR_SF, 0+UPOU_INPUTC(CURR_SF.pou), UPOU_REGC(CURR_SF.pou)-UPOU_INPUTC(i));   \
     } else {                                                                    \
         /* caller_sf, output_base, called_sf, output_base, outpouc */           \
         sf_regcpy(PREV_SF, CURR_SF.retreg,                                      \
