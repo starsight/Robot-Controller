@@ -25,8 +25,11 @@ TaskList plc_task;
 RT_HEAP	  rc_heap_desc;					/* RC/PLC共享数据区描述符 */
 RT_HEAP   sv_heap_desc;					/* 伺服映像数据共享区描述符 */
 
+// rc_cond_desc未使用
 RT_COND   rc_cond_desc;					/* RC/PLC同步对象－－条件变量描述符 */
+// rc_mutex_desc未使用
 RT_MUTEX  rc_mutex_desc;				/* RC/PLC同步对象－－互斥量描述符 */
+
 RT_MUTEX  sv_mutex_desc;				/* PLC/Servo同步对象－－互斥量描述符 */
 
 RT_QUEUE  mq_rc_interp_desc;			/* 消息队列描述符 PLC --> RC插补器 */
