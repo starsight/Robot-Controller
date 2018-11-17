@@ -109,6 +109,7 @@ extern TaskList plc_task;
 }
 
 /* ret返回过程： 解码ret->传出参数->PC指针跳转->栈帧出栈 */
+// 函数的返回位置在input变量位置；功能块的返回位置在in_out变量位置
 #define do_ret(caller_input_base, called_id) {                                  \
     if(UPOU_TYPE(CURR_SF.pou) == 2) {                                           \
         sf_regcpy(PREV_SF, CURR_SF.retreg+UPOU_INPUTC(CURR_SF.pou),             \
